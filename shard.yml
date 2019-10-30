@@ -1,0 +1,9 @@
+name: crystal-wait-group
+version: 0.1.0
+
+authors:
+  - Jason Howell <jasonrobot64@gmail.com>
+
+crystal: 0.31.1
+
+license: MIT
