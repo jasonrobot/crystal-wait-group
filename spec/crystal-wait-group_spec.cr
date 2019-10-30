@@ -17,7 +17,7 @@ describe WaitGroup do
       sleep 2
       wg.done
     end
-    wg._spawn do
+    wg.spawn do
       puts "sleeping in block"
       sleep 1
       puts "done sleeping in block"
