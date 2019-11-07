@@ -11,7 +11,7 @@ There's probably still some work that needs to be done here, but it seems to wor
    ```yaml
    dependencies:
      crystal-wait-group:
-       github: your-github-user/crystal-wait-group
+       github: jasonrobot/crystal-wait-group
    ```
 
 2. Run `shards install`

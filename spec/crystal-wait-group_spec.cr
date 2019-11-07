@@ -5,13 +5,6 @@ describe WaitGroup do
 
   it "works" do
     wg = WaitGroup.new
-    puts "calling add"
-    # wg.add
-    # spawn do
-    #   sleep 1
-    #   puts "calling done"
-    #   wg.done
-    # end
     wg.add
     spawn do
       sleep 2
