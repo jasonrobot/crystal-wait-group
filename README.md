@@ -50,7 +50,7 @@ All feedback is welcome! This is my first time playing with concurrency at this 
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/crystal-wait-group/fork>)
+1. Fork it (<https://github.com/jasonrobot/crystal-wait-group/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -58,4 +58,4 @@ All feedback is welcome! This is my first time playing with concurrency at this 
 
 ## Contributors
 
-- [Jason Howell](https://github.com/your-github-user) - creator and maintainer
+- [Jason Howell](https://github.com/jasonrobot) - creator and maintainer
