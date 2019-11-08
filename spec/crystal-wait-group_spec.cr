@@ -19,4 +19,26 @@ describe WaitGroup do
     wg.wait
     puts "wait done"
   end
+
+  describe "number of fibers being waited on", focus: true do
+
+    [1, 2, 3, 4, 8].each do |count|
+    # [1].each do |count|
+      it "waits for #{count} fibers" do
+        wg = WaitGroup.new
+        counter = Atomic(Int32).new 0
+
+        count.times do
+          wg.add
+          spawn do
+            sleep 1
+            counter.add 1
+            wg.done
+          end
+        end
+        wg.wait
+        counter.get.should eq count
+      end
+    end
+  end
 end
