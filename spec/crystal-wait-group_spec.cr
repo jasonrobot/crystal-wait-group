@@ -20,10 +20,9 @@ describe WaitGroup do
     puts "wait done"
   end
 
-  describe "number of fibers being waited on", focus: true do
+  describe "number of fibers being waited on" do
 
     [1, 2, 3, 4, 8].each do |count|
-    # [8].each do |count|
 
       it "waits for #{count} fibers" do
         wg = WaitGroup.new
@@ -32,7 +31,7 @@ describe WaitGroup do
         count.times do
           wg.add
           spawn do
-            sleep 1
+            sleep 50.milliseconds
             counter.add 1
             wg.done
           end

@@ -10,12 +10,12 @@ class WaitGroup
   def add(delta = 1)
     @mutex.synchronize do
       @state += delta
-      puts "state is #{@state}"
+      # puts "state is #{@state}"
     end
   end
 
   def done
-    puts "done"
+    # puts "done"
     @mutex.synchronize do
       # puts "decrementing state from #{@state}"
       @state -= 1
@@ -29,17 +29,17 @@ class WaitGroup
   end
 
   private def wake_waiting_fibers
-    puts "restarting waiters"
+    # puts "restarting waiters"
     Crystal::Scheduler.enqueue @waiting_fibers
     @waiting_fibers.clear
   end
 
   def wait
-    puts "waiting"
+    # puts "waiting"
     should_wait = false
     @mutex.synchronize do
       unless @state == 0
-        puts "pausing thread"
+        # puts "pausing thread"
         @waiting_fibers << Fiber.current
         should_wait = true
       end
