@@ -23,7 +23,8 @@ describe WaitGroup do
   describe "number of fibers being waited on", focus: true do
 
     [1, 2, 3, 4, 8].each do |count|
-    # [1].each do |count|
+    # [8].each do |count|
+
       it "waits for #{count} fibers" do
         wg = WaitGroup.new
         counter = Atomic(Int32).new 0
