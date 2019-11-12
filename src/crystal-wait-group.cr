@@ -59,5 +59,4 @@ class WaitGroup
       end
     end
   end
-
 end
