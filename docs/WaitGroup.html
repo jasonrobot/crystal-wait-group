@@ -62,7 +62,26 @@
 
   <h2>Overview</h2>
 
-  <p><span class="flag orange">TODO</span>  Write documentation for <code>Crystal::Wait::Group</code></p>
+  <p>WaitGroup can be used to wait for a number of different fibers to complete.</p>
+
+<p>Multiple fibers can be waited for, and multiple fibers can be waiting. Once
+there are no fibers being waited for</p>
+
+<pre><code>wg <span class="o">=</span> <span class="t">WaitGroup</span>.<span class="k">new</span>
+wg.spawn <span class="k">do</span>
+  sleep <span class="n">1</span>
+  puts <span class="s">&quot;slept for 1&quot;</span>
+<span class="k">end</span>
+
+wg.add
+spawn <span class="k">do</span>
+  sleep <span class="n">2</span>
+  puts <span class="s">&quot;slept for 2&quot;</span>
+  wg.done
+<span class="k">end</span>
+
+wg.wait
+puts <span class="s">&quot;done waiting&quot;</span></code></pre>
 
 
 
@@ -80,7 +99,7 @@
   <h2>Defined in:</h2>
   
     
-      <a href="https://github.com/jasonrobot/crystal-wait-group/blob/66834662884278b76047c1c90d4befb28bafb788/src/crystal-wait-group.cr#L4" target="_blank">
+      <a href="https://github.com/jasonrobot/crystal-wait-group/blob/745c68380af7492bc1d59bf75b640c33e4e96759/src/crystal-wait-group.cr#L25" target="_blank">
         crystal-wait-group.cr
       </a>
     
@@ -101,20 +120,28 @@
       <li class="entry-summary">
         <a href="#add(delta=1)-instance-method" class="signature"><strong>#add</strong>(delta = <span class="n">1</span>)</a>
         
+          <div class="summary"><p>Add <code>delta</code> to the number of fibers being waited for.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#done-instance-method" class="signature"><strong>#done</strong></a>
+        
+          <div class="summary"><p>Decrease the number of fibers being waited for by 1.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#spawn(&block)-instance-method" class="signature"><strong>#spawn</strong>(&block)</a>
         
+          <div class="summary"><p>Spawn a block in a fiber, calling <code><a href="WaitGroup.html#add(delta=1)-instance-method">#add</a></code> before it is spawned, and <code><a href="WaitGroup.html#done-instance-method">#done</a></code> once it completes.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#wait-instance-method" class="signature"><strong>#wait</strong></a>
+        
+          <div class="summary"><p>Pause the current fiber until there are no fibers being waited for.</p></div>
         
       </li>
     
@@ -163,10 +190,17 @@
         <a class="method-permalink" href="#add(delta=1)-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Add <code>delta</code> to the number of fibers being waited for.</p>
+
+<p>Delta should be positive. Use <code><a href="WaitGroup.html#done-instance-method">#done</a></code> instead to decrement the counter.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jasonrobot/crystal-wait-group/blob/66834662884278b76047c1c90d4befb28bafb788/src/crystal-wait-group.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/jasonrobot/crystal-wait-group/blob/745c68380af7492bc1d59bf75b640c33e4e96759/src/crystal-wait-group.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -179,10 +213,20 @@
         <a class="method-permalink" href="#done-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Decrease the number of fibers being waited for by 1.</p>
+
+<p>This should be called from within the spawned fiber that's being waited for.
+Once there are 0 fibers being waited for, all waiting fibers will be restarted.</p>
+
+<p>Raises an error if the counter goes below 0.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jasonrobot/crystal-wait-group/blob/66834662884278b76047c1c90d4befb28bafb788/src/crystal-wait-group.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/jasonrobot/crystal-wait-group/blob/745c68380af7492bc1d59bf75b640c33e4e96759/src/crystal-wait-group.cr#L47" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -195,10 +239,16 @@
         <a class="method-permalink" href="#spawn(&block)-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Spawn a block in a fiber, calling <code><a href="WaitGroup.html#add(delta=1)-instance-method">#add</a></code> before it is spawned, and <code><a href="WaitGroup.html#done-instance-method">#done</a></code>
+once it completes.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jasonrobot/crystal-wait-group/blob/66834662884278b76047c1c90d4befb28bafb788/src/crystal-wait-group.cr#L52" target="_blank">View source</a>]
+          [<a href="https://github.com/jasonrobot/crystal-wait-group/blob/745c68380af7492bc1d59bf75b640c33e4e96759/src/crystal-wait-group.cr#L89" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -211,10 +261,18 @@
         <a class="method-permalink" href="#wait-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Pause the current fiber until there are no fibers being waited for.</p>
+
+<p>If the counter is 0, <code><a href="WaitGroup.html#wait-instance-method">#wait</a></code> will return immediately without blocking.
+Multiple fibers can wait on the same wait group.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jasonrobot/crystal-wait-group/blob/66834662884278b76047c1c90d4befb28bafb788/src/crystal-wait-group.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/jasonrobot/crystal-wait-group/blob/745c68380af7492bc1d59bf75b640c33e4e96759/src/crystal-wait-group.cr#L69" target="_blank">View source</a>]
         
       </div>
     </div>
