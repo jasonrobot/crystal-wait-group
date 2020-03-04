@@ -23,7 +23,6 @@ require "fiber"
 # puts "done waiting"
 # ```
 class WaitGroup
-  # @state = Atomic(Int32).new 0
   @mutex = Mutex.new
   @waiting_fibers = Deque(Fiber).new
   @state = 0
@@ -61,6 +60,19 @@ class WaitGroup
     @waiting_fibers.clear
   end
 
+  # Spawn a block in a fiber, calling `add` before it is spawned, and `done`
+  # once it completes.
+  def spawn(&block)
+    add
+    ::spawn do
+      begin
+        block.call
+      ensure
+        done
+      end
+    end
+  end
+
   # Pause the current fiber until there are no fibers being waited for.
   #
   # If the counter is 0, `wait` will return immediately without blocking.
@@ -74,6 +86,10 @@ class WaitGroup
       unless @state == 0
         @waiting_fibers << Fiber.current
         should_wait = true
+        # I would rather do this than use a flag.
+        # @mutex.unsynchronize do
+        #   Crystal::Scheduler.reschedule
+        # end
       end
     end
     # This is probably a race condition. If another fiber decrements the counter
@@ -83,16 +99,8 @@ class WaitGroup
     end
   end
 
-  # Spawn a block in a fiber, calling `add` before it is spawned, and `done`
-  # once it completes.
-  def spawn(&block)
-    add
-    ::spawn do
-      begin
-        block.call
-      ensure
-        done
-      end
-    end
+
+  def unwait
+    @waiting_fibers.delete_if { |waiter| waiter.fiber == Fiber.current }
   end
 end
